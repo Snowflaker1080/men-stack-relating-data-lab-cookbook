@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Add New Pantry Item</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Pantry Item</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+</head>
+<body>
 
-    <form action="/users/<%= userId %>/foods" method="POST">
-      <div>
-        <label for="name">Food Name:</label>
-        <input type="text" name="name" id="name" required placeholder="e.g. Bananas" />
+  <%- include('../partials/_navbar') %>
+
+  <section class="section">
+    <div class="container">
+      <div class="column is-half is-offset-one-quarter">
+        <div class="box">
+
+          <h1 class="title has-text-centered">Add New Pantry Item</h1>
+
+          <form action="/users/<%= userId %>/foods" method="POST">
+            <div class="field">
+              <label class="label" for="name">Food Name</label>
+              <div class="control">
+                <input class="input" type="text" name="name" id="name" required placeholder="e.g. Bananas" />
+              </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-centered">
+              <div class="control">
+                <button class="button is-primary" type="submit">Add Item</button>
+              </div>
+              <div class="control">
+                <a class="button is-light" href="/users/<%= userId %>/foods">Back to Pantry</a>
+              </div>
+            </div>
+          </form>
+
+        </div>
       </div>
-      <button type="submit">Add Item</button>
-    </form>
+    </div>
+  </section>
 
-    <a href="/users/<%= userId %>/foods">Back to Pantry</a>
-  </body>
+</body>
 </html>

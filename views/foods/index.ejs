@@ -1,38 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Pantry</title>
-  </head>
-  <body>
-    
-    <%- include('partials/_navbar') %>
-    <h1>Welcome to my Pantry</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Pantry</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+</head>
+<body>
 
-    <div>
-    <a href="/users/<%= userId %>/foods/new">Add New Item</a>
-    </div>
+  <%- include('../partials/_navbar') %>
 
-<ul>
-      <% if (user.pantry.length > 0) { %>
-        <% user.pantry.forEach(item => { %>
-          <li>
-            <%= item.name %>
+  <section class="section">
+    <div class="container">
 
-            <!-- Edit link -->
-            <a href="/users/<%= user._id %>/foods/<%= item._id %>/edit">Edit</a>
+      <h1 class="title has-text-centered">Welcome to my Pantry</h1>
 
-            <!-- DELETE button -->
-            <form action="/users/<%= user._id %>/foods/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;">
-              <button type="submit">Delete</button>
-            </form>
-          </li>
-        <% }) %>
-      <% } else { %>
-        <p>There are no items in this pantry.</p>
+      <% if (justAdded) { %>
+        <div class="notification is-success is-light">
+          <strong>✔ Item successfully added to your pantry!</strong>
+        </div>
       <% } %>
-    </ul>
-  </body>
 
+      <div class="has-text-centered mb-5">
+        <a class="button is-primary" href="/users/<%= userId %>/foods/new">Add New Item</a>
+      </div>
+
+      <% if (pantry.length > 0) { %>
+        <div class="box">
+          <ul>
+            <% pantry.forEach(item => { %>
+              <li class="mb-4">
+                <strong><%= item.name %></strong>
+
+                <a class="button is-small is-info ml-2" href="/users/<%= userId %>/foods/<%= item._id %>/edit">Edit</a>
+
+                <form action="/users/<%= user._id %>/foods/<%= item._id %>?_method=DELETE" method="POST" class="is-inline">
+                  <button class="button is-small is-danger ml-1" type="submit">Delete</button>
+                </form>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } else { %>
+        <div class="notification is-warning is-light">
+          There are no items in this pantry.
+        </div>
+      <% } %>
+
+    </div>
+  </section>
+
+</body>
 </html>

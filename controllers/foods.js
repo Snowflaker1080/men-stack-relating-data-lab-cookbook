@@ -5,11 +5,15 @@ const User = require(`../models/user.js`);
 // INDEX: GET /users/:userId/foods - listing pantry items
 router.get('/', async (req, res) => {
   try {
-    const userId = req.session.userId;
+    const userId = req.session.userId || req.params.userId;
     const user = await User.findById(userId);
     const justAdded = req.query.success === 'true';
 
-    res.render(`foods/index`, { user, justAdded, userId });
+    if (!user){
+      return res.redirect('/auth/sign-in');
+    }
+
+    res.render(`foods/index`, { pantry: user.pantry, justAdded, userId });
     } catch (err) {
         console.error('Error fetching pantry items', err);
         res.redirect(`/`);
@@ -18,14 +22,14 @@ router.get('/', async (req, res) => {
 
 // NEW FORM: GET /users/:userId/foods/new - Show the form to add a new food item
 router.get('/new', (req, res) => {
-    const userId = req.session.userId;
+    const userId = req.session.userId || req.params.userId;
     res.render('foods/new', { userId });
 });
 
 // CREATE: POST /user/:userId/foods - add item to pantry
 router.post('/', async (req, res) => {
   try {
-    const userId = req.session.userId; // get user from session
+    const userId = req.session.userId || req.params.userId; // get user from session
     const user = await User.findById(userId);
 
     if (!user) {
@@ -46,7 +50,7 @@ router.post('/', async (req, res) => {
 // EDIT: GET /users/:userId/foods/:itemId/edit
 router.get('/:itemId/edit', async (req, res) => {
   try {
-    const userId = req.session.userId;
+    const userId = req.session.userId || req.params.userId;
     const itemId = req.params.itemId;
 
     const user = await User.findById(userId);
@@ -65,7 +69,7 @@ router.get('/:itemId/edit', async (req, res) => {
 // UPDATE: PUT /users/:userId/foods/:itemId
 router.put('/:itemId', async (req, res) => {
   try {
-    const userId = req.session.userId;
+    const userId = req.session.userId || req.params.userId;
     const itemId = req.params.itemId;
 
     const user = await User.findById(userId);
@@ -76,8 +80,8 @@ router.put('/:itemId', async (req, res) => {
 
     // Update the item using .set()
     foodItem.set({ name: req.body.name });
-
     await user.save();
+    
     res.redirect(`/users/${userId}/foods`);
   } catch (err) {
     console.error('Error updating food item:', err);
@@ -88,7 +92,7 @@ router.put('/:itemId', async (req, res) => {
 // DELETE: /users/:userId/foods/:itemId - remove food item from pantry
 router.delete('/:itemId', async (req, res) => {
   try {
-    const userId = req.session.userId;
+    const userId = req.session.userId || req.params.userId;
     const itemId = req.params.itemId;
 
     const user = await User.findById(userId);
@@ -97,8 +101,13 @@ router.delete('/:itemId', async (req, res) => {
       return res.redirect('/');
     }
 
-    // Remove the item by ID from the embedded pantry array
-    user.pantry.id(itemId).deleteOne();
+    const foodItem = user.pantry.id(itemId);
+    if (!foodItem) {
+      console.error('Food item not found.');
+      return res.redirect(`/users/${userId}/foods`);
+    }
+
+    foodItem.deleteOne(); // called only if foodItem exists
     await user.save();
 
     res.redirect(`/users/${userId}/foods`);

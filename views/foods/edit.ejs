@@ -4,16 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Edit Food Item</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
 </head>
 <body>
-  <h1>Edit Pantry Item</h1>
 
-  <form action="/users/<%= userId %>/foods/<%= foodItem._id %>?_method=PUT" method="POST">
-    <label for="name">Food Name:</label>
-    <input type="text" id="name" name="name" value="<%= foodItem.name %>" required />
-    <button type="submit">Save Changes</button>
-  </form>
+  <%- include('../partials/_navbar') %>
 
-  <a href="/users/<%= userId %>/foods">Back to Pantry</a>
+  <section class="section">
+    <div class="container">
+      <div class="column is-half is-offset-one-quarter">
+        <div class="box">
+
+          <h1 class="title has-text-centered">Edit Pantry Item</h1>
+
+          <form action="/users/<%= userId %>/foods/<%= foodItem._id %>?_method=PUT" method="POST">
+            <div class="field">
+              <label class="label" for="name">Food Name</label>
+              <div class="control">
+                <input class="input" type="text" id="name" name="name" value="<%= foodItem.name %>" required />
+              </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-centered">
+              <div class="control">
+                <button class="button is-success" type="submit">Save Changes</button>
+              </div>
+              <div class="control">
+                <a class="button is-light" href="/users/<%= userId %>/foods">Back to Pantry</a>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>

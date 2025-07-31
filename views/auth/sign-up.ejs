@@ -4,22 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
 </head>
 <body>
-  <h1>Create a new account!</h1>
-  <form action="/auth/sign-up" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" required />
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required />
-    <label for="confirmPassword">Confirm Password:</label>
-    <input 
-      type="password"
-      name="confirmPassword"
-      id="confirmPassword"
-      required 
-    />
-    <button type="submit">Sign up</button>
-  </form>
+
+  <%- include('../partials/_navbar') %>
+  
+  <section class="section">
+    <div class="container">
+      <div class="column is-half is-offset-one-quarter">
+        <div class="box">
+          <h1 class="title has-text-centered">Create a New Account</h1>
+          <form action="/auth/sign-up" method="POST">
+            <div class="field">
+              <label class="label" for="username">Username</label>
+              <div class="control">
+                <input class="input" type="text" name="username" id="username" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="password">Password</label>
+              <div class="control">
+                <input class="input" type="password" name="password" id="password" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="confirmPassword">Confirm Password</label>
+              <div class="control">
+                <input class="input" type="password" name="confirmPassword" id="confirmPassword" required />
+              </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-centered">
+              <div class="control">
+                <button class="button is-primary">Sign Up</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
