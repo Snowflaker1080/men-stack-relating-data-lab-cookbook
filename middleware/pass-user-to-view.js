@@ -1,5 +1,5 @@
 const passUserToView = (req, res, next) => {
-    res.local.user = req.session.user ? req.session.user : null;
+    res.locals.user = req.session.user ? req.session.user : null;
     next();
 };
 

@@ -1,0 +1,38 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+/>
+
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      🧑‍🍳 CookBook
+    </a>
+  </div>
+
+  <div class="navbar-menu is-active">
+    <div class="navbar-start">
+      <a class="navbar-item" href="/">Home</a>
+
+      <% if (user) { %>
+        <a class="navbar-item" href="/users/<%= user._id %>/foods">My Pantry</a>
+      <% } %>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <% if (user) { %>
+          <div class="buttons">
+            <span class="navbar-item">👋 Hello, <strong><%= user.username %></strong></span>
+            <a class="button is-light" href="/auth/sign-out">Sign Out</a>
+          </div>
+        <% } else { %>
+          <div class="buttons">
+            <a class="button is-light" href="/auth/sign-in">Sign In</a>
+            <a class="button is-link" href="/auth/sign-up">Sign Up</a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
