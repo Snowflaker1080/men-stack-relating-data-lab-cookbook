@@ -22,13 +22,21 @@ router.post('/sign-up', async (req, res) => {
     // Check if the username is already taken
     const userInDatabase = await User.findOne({ username: req.body.username });
     if (userInDatabase) {
-      return res.send('Username already taken.');
+        return res.status(400).render('auth/error', {
+        title: 'Sign-Up Failed',
+        errorMessage: '❌ Username already taken. Please choose another.',
+        redirectTo: 'sign-up'
+      });
     }
   
     // Username is not taken already!
     // Check if the password and confirm password match
     if (req.body.password !== req.body.confirmPassword) {
-      return res.send('Password and Confirm Password must match');
+     return res.status(400).render('auth/error', {
+        etitle: 'Sign-Up Failed',
+        errorMessage: '❌ Password and Confirm Password must match.',
+        redirectTo: 'sign-up'
+      });
     }
   
     // Must hash the password before sending to the database
@@ -51,7 +59,9 @@ router.post('/sign-in', async (req, res) => {
     const userInDatabase = await User.findOne({ username: req.body.username });
     if (!userInDatabase) {
       return res.status(401).render('auth/error', {
-        message: 'Invalid username or password. Please try again.',
+        title: 'Login Failed',
+        errorMessage: '❌ Invalid username or password. Please try again.',
+        redirectTo: 'sign-in'
       });
     }
   
@@ -62,7 +72,9 @@ router.post('/sign-in', async (req, res) => {
     );
     if (!validPassword) {
       return res.status(500).render('auth/error', {
-        message: 'An unexpected error occurred.',
+        title: 'Login Failed',
+        errorMessage: '❌ An unexpected error occurred.',
+        redirectTo: 'sign-in'
       });
     }
   
